@@ -7,11 +7,15 @@ const PACKAGE = require('../package.json')
 program.version(PACKAGE.version)
 
 program.on('--help', () => {
-  console.log('Select relase version using cli')
+  console.log('Select release version using cli')
 })
 
-if (!process.argv.slice(2).length) {
-  selectVersion().then((version) => {
+const argv2 = process.argv[2]
+// select-version-cli  rc 可以发布带 preid 的版本
+let preid = argv2 && argv2[0] !== '-' ? argv2 : ''
+if (!process.argv.slice(3).length && preid) {
+
+  selectVersion(preid).then((version) => {
     process.stdout.write(version)
   }).catch((err) => {
     console.error(err)
